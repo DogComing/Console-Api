@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiConfigWildMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.platform.entity.ConfigWildVo" id="wildMap">
+        <result property="id" column="id"/>
+        <result property="grade" column="grade"/>
+        <result property="wildName" column="wild_name"/>
+        <result property="wildDesc" column="wild_desc"/>
+        <result property="imgName" column="img_name"/>
+        <result property="fightingNum" column="fighting_num"/>
+        <result property="durability" column="durability"/>
+        <result property="isFight" column="is_fight"/>
+        <result property="wildType" column="wild_type"/>
+        <result property="isIgnoreTalent" column="is_ignore_talent"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!--查询某个野生详情-->
+    <select id="queryObject" resultMap="wildMap">
+        select * from config_wild where id = #{value}
+    </select>
+
+    <!--查询野生列表-->
+    <select id="queryList" resultMap="wildMap">
+        select * from config_wild where 1 = 1
+        <if test="wildName != null and wildName != ''">
+            and `wild_name` = #{wildName}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from config_wild where 1 = 1
+        <if test="wildName != null and wildName != ''">
+            and `wild_name` = #{wildName}
+        </if>
+    </select>
+
+    <update id="update" parameterType="java.util.Map">
+        update config_wild
+        <set>
+            <if test="wildName != null and wildName != ''"> `wild_name` = #{wildName},</if>
+            <if test="wildDesc != null and wildDesc != ''"> `wild_desc` = #{wildDesc},</if>
+            <if test="imgName != null and imgName != ''"> `img_name` = #{imgName},</if>
+            <if test="isFight != null"> `is_fight` = #{isFight},</if>
+            <if test="isIgnoreTalent != null"> `is_ignore_talent` = #{isIgnoreTalent},</if>
+            <if test="fightingNum > 0"> `fighting_num` = #{fightingNum},</if>
+            <if test="wildType > 0"> `wild_type` = #{wildType},</if>
+            <if test="grade > 0"> `grade` = #{grade},</if>
+            <if test="durability > 0"> `durability` = #{durability},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--查询野生列表-->
+    <select id="allWild" resultMap="wildMap">
+        select * from config_wild where 1 = 1
+    </select>
+
+</mapper>

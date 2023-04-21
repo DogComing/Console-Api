@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiConfigForageMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.platform.entity.ConfigForageVo" id="forageMap">
+        <result property="id" column="id"/>
+        <result property="grade" column="grade"/>
+        <result property="forageName" column="forage_name"/>
+        <result property="forageDesc" column="forage_desc"/>
+        <result property="imgName" column="img_name"/>
+        <result property="fightingNum" column="fighting_num"/>
+        <result property="forageType" column="forage_type"/>
+        <result property="isIgnoreTalent" column="is_ignore_talent"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!--查询某个饲料详情-->
+    <select id="queryObject" resultMap="forageMap">
+        select * from config_forage where id = #{value}
+    </select>
+
+    <!--查询某个饲料详情-->
+    <select id="queryObjectByMap" resultMap="forageMap">
+        select * from config_forage where 1 = 1
+        <if test="grade != null">
+            and grade = #{grade}
+        </if>
+        <if test="forageType != null">
+            and forage_type = #{forageType}
+        </if>
+    </select>
+
+    <!--查询饲料列表-->
+    <select id="queryList" resultMap="forageMap">
+        select * from config_forage where 1 = 1
+        <if test="forageName != null and forageName != ''">
+            and `forage_name` = #{forageName}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from config_forage where 1 = 1
+        <if test="forageName != null and forageName != ''">
+            and `forage_name` = #{forageName}
+        </if>
+    </select>
+
+    <update id="update" parameterType="java.util.Map">
+        update config_forage
+        <set>
+            <if test="forageName != null and forageName != ''"> `forage_name` = #{forageName},</if>
+            <if test="forageDesc != null and forageDesc != ''"> `forage_desc` = #{forageDesc},</if>
+            <if test="imgName != null and imgName != ''"> `img_name` = #{imgName},</if>
+            <if test="isIgnoreTalent != null"> `is_ignore_talent` = #{isIgnoreTalent},</if>
+            <if test="fightingNum > 0"> `fighting_num` = #{fightingNum},</if>
+            <if test="forageType > 0"> `forage_type` = #{forageType},</if>
+            <if test="grade > 0"> `grade` = #{grade},</if>
+            <if test="durability > 0"> `durability` = #{durability},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--查询饲料列表-->
+    <select id="allForage" resultMap="forageMap">
+        select * from config_forage where 1 = 1
+    </select>
+
+    <select id="queryListByMap" resultMap="forageMap">
+        select * from config_forage
+        where 1 = 1
+        <if test="forageType != null">
+            and `forage_type` = #{forageType}
+        </if>
+    </select>
+
+    <select id="queryObjectByGrade" resultMap="forageMap">
+        select * from config_forage where grade = #{grade}
+    </select>
+
+</mapper>

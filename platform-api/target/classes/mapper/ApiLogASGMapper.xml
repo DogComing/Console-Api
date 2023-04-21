@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiLogASGMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.platform.entity.LogASGVo" id="logMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="num" column="num"/>
+        <result property="logType" column="log_type"/>
+        <result property="asgType" column="asg_type"/>
+        <result property="logTypeTxt" column="log_type_txt"/>
+        <result property="agsTypeTxt" column="ags_type_txt"/>
+        <result property="remarks" column="remarks"/>
+        <result property="address" column="address"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="queryObject" resultMap="logMap">
+        select * from log_asg where id = #{value}
+    </select>
+
+    <select id="queryList" resultMap="logMap">
+        select * from log_asg where 1 = 1
+        <if test="userName != null and userName != ''">
+            and `user_name` = #{userName}
+        </if>
+        <if test="day != null and day != ''">
+            DATE_FORMAT(create_time, '%Y-%m-%d') = #{day}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from log_asg where 1 = 1
+        <if test="userName != null and userName != ''">
+            and `user_name` = #{userName}
+        </if>
+        <if test="day != null and day != ''">
+            DATE_FORMAT(create_time, '%Y-%m-%d') = #{day}
+        </if>
+    </select>
+
+    <delete id="delete">
+        delete from log_asg where id = #{value}
+    </delete>
+
+</mapper>

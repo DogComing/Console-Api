@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiConfigCatchEquipMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.platform.entity.ConfigCatchEquipVo" id="catchMap">
+        <result property="id" column="id"/>
+        <result property="grade" column="grade"/>
+        <result property="equipName" column="equip_name"/>
+        <result property="equipDesc" column="equip_desc"/>
+        <result property="imgName" column="img_name"/>
+        <result property="Unum" column="u_num"/>
+        <result property="durability" column="durability"/>
+        <result property="catchType" column="catch_type"/>
+        <result property="deedType" column="deed_type"/>
+        <result property="extraOne" column="extra_one"/>
+        <result property="extraTwo" column="extra_two"/>
+        <result property="isGem" column="is_gem"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!--查询某个捕捉道具详情-->
+    <select id="queryObject" resultMap="catchMap">
+        select * from config_catch_equip where id = #{value}
+    </select>
+
+    <!--查询捕捉道具列表-->
+    <select id="queryList" resultMap="catchMap">
+        select * from config_catch_equip where 1 = 1
+        <if test="equipName != null and equipName != ''">
+            and `equip_name` = #{equipName}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from config_catch_equip where 1 = 1
+        <if test="equipName != null and equipName != ''">
+            and `equip_name` = #{equipName}
+        </if>
+    </select>
+
+    <update id="update" parameterType="java.util.Map">
+        update config_catch_equip
+        <set>
+            <if test="equipName != null and equipName != ''"> `equip_name` = #{equipName},</if>
+            <if test="equipDesc != null and equipDesc != ''"> `equip_desc` = #{equipDesc},</if>
+            <if test="imgName != null and imgName != ''"> `img_name` = #{imgName},</if>
+            <if test="Unum != null"> `u_num` = #{Unum},</if>
+            <if test="isGem != null"> `is_gem` = #{isGem},</if>
+            <if test="extraOne != null"> `extra_one` = #{extraOne},</if>
+            <if test="extraTwo != null"> `extra_two` = #{extraTwo},</if>
+            <if test="catchType > 0"> `catch_type` = #{catchType},</if>
+            <if test="deedType > 0"> `deed_type` = #{deedType},</if>
+            <if test="grade > 0"> `grade` = #{grade},</if>
+            <if test="durability > 0"> `durability` = #{durability},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="queryListByMap" resultMap="catchMap">
+        select * from config_catch_equip
+        where 1 = 1
+        <if test="isGem != null">
+            and `is_gem` = #{isGem}
+        </if>
+    </select>
+
+    <select id="queryObjectByType" resultMap="catchMap">
+        select * from config_catch_equip where grade = #{grade} and catch_type = #{type}
+    </select>
+
+    <select id="queryObjectByGrade" resultMap="catchMap">
+        select * from config_catch_equip where grade = #{grade}
+    </select>
+
+</mapper>

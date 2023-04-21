@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiConfigAdMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.platform.entity.ConfigAdVo" id="adMap">
+        <result property="id" column="id"/>
+        <result property="adUrl" column="ad_url"/>
+        <result property="jumpUrl" column="jump_url"/>
+        <result property="awardName" column="award_name"/>
+        <result property="imgName" column="img_name"/>
+        <result property="awardType" column="award_type"/>
+        <result property="awardNum" column="award_num"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!--查询配置表某个广告详情-->
+    <select id="queryObject" resultMap="adMap">
+        select * from config_ad where id = #{value}
+    </select>
+
+    <select id="queryList" resultMap="adMap">
+        select * from config_ad where 1 = 1
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from config_ad where 1 = 1
+    </select>
+
+    <update id="update" parameterType="java.util.Map">
+        update config_ad
+        <set>
+            <if test="adUrl != null and adUrl != ''"> `ad_url` = #{adUrl},</if>
+            <if test="jumpUrl != null and jumpUrl != ''"> `jump_url` = #{jumpUrl},</if>
+            <if test="awardName != null and awardName != ''"> `award_name` = #{awardName},</if>
+            <if test="imgName != null"> `img_name` = #{imgName},</if>
+            <if test="awardType != null"> `award_type` = #{awardType},</if>
+            <if test="awardNum != null"> `award_num` = #{awardNum},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
