@@ -7,13 +7,13 @@
     <resultMap type="com.platform.entity.LogPayVo" id="logMap">
         <result property="id" column="id"/>
         <result property="userId" column="user_id"/>
-        <result property="userName" column="user_name"/>
         <result property="money" column="money"/>
         <result property="type" column="type"/>
         <result property="currencyType" column="currency_type"/>
         <result property="typeTxt" column="type_txt"/>
         <result property="currencyTxt" column="currency_txt"/>
         <result property="remarks" column="remarks"/>
+        <result property="address" column="address"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
@@ -24,8 +24,11 @@
 
     <select id="queryList" resultMap="logMap">
         select * from log_pay where 1 = 1
-        <if test="userName != null and userName != ''">
-            and `user_name` = #{userName}
+        <if test="userId != null and userId != ''">
+            and `user_id` = #{userId}
+        </if>
+        <if test="address != null and address != ''">
+            and `address` = #{address}
         </if>
         <if test="day != null and day != ''">
             DATE_FORMAT(create_time, '%Y-%m-%d') = #{day}
@@ -45,8 +48,11 @@
 
     <select id="queryTotal" resultType="int">
         select count(1) from log_pay where 1 = 1
-        <if test="userName != null and userName != ''">
-            and `user_name` = #{userName}
+        <if test="userId != null and userId != ''">
+            and `user_id` = #{userId}
+        </if>
+        <if test="address != null and address != ''">
+            and `address` = #{address}
         </if>
         <if test="day != null and day != ''">
             DATE_FORMAT(create_time, '%Y-%m-%d') = #{day}

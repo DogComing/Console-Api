@@ -35,6 +35,8 @@ public class ApiLogController extends ApiBaseAction {
     private ApiLogGameResultService logGameResultService;
     @Autowired
     private ApiLogAdService logAdService;
+    @Autowired
+    private ApiUserService userService;
 
     /**
      * 用户押注记录
@@ -45,20 +47,34 @@ public class ApiLogController extends ApiBaseAction {
      */
     @ApiOperation(value = "用户押注记录")
     @GetMapping("award")
-    public Object scoreLogList(@RequestParam("gameNum") String gameNum, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public Object scoreLogList(@RequestParam(value = "gameNum", defaultValue = "") String gameNum, @RequestParam(value = "address", defaultValue = "") String address, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
 
         try {
+
             Map params = new HashMap();
             params.put("page", page);
             params.put("limit", size);
             params.put("sidx", "id");
             params.put("order", "desc");
             params.put("gameNum", gameNum);
+            params.put("address", address);
 
             //查询列表数据
             Query query = new Query(params);
             int total = logAwardService.queryTotal(query);
             List<LogAwardVo> logList = logAwardService.queryList(query);
+            if (logList.size() <= 0) {
+                ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
+                return toResponsSuccess(pageUtil);
+            }
+            List<UserVo> userVoList = userService.queryUserList(logList);
+            for (int i = 0; i < userVoList.size(); i++){
+                for (int j = 0; j < logList.size(); j++){
+                    if (logList.get(j).getUserId().equals(userVoList.get(i).getUserId())){
+                        logList.get(j).setUserName(userVoList.get(i).getUserName());
+                    }
+                }
+            }
             ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
             return toResponsSuccess(pageUtil);
         } catch (Exception e) {
@@ -76,20 +92,37 @@ public class ApiLogController extends ApiBaseAction {
      */
     @ApiOperation(value = "用户支付记录")
     @GetMapping("pay")
-    public Object moneyLogList(@RequestParam("userName") String userName, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public Object moneyLogList(@RequestParam(value="userName", defaultValue = "") String userName, @RequestParam(value = "address", defaultValue = "") String address, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
 
         try {
+
+            UserVo userVo = null;
+            if (!userName.isEmpty()) userVo = userService.queryObjectByName(userName);
+
             Map params = new HashMap();
             params.put("page", page);
             params.put("limit", size);
             params.put("sidx", "id");
             params.put("order", "desc");
-            params.put("userName", userName);
+            params.put("address", address);
+            if (userVo != null) params.put("userId", userVo.getUserId());
 
             //查询列表数据
             Query query = new Query(params);
             int total = logPayService.queryTotal(query);
             List<LogPayVo> logList = logPayService.queryList(query);
+            if (logList.size() <= 0) {
+                ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
+                return toResponsSuccess(pageUtil);
+            }
+            List<UserVo> userVoList = userService.queryUserByPay(logList);
+            for (int i = 0; i < userVoList.size(); i++){
+                for (int j = 0; j < logList.size(); j++){
+                    if (logList.get(j).getUserId().equals(userVoList.get(i).getUserId())){
+                        logList.get(j).setUserName(userVoList.get(i).getUserName());
+                    }
+                }
+            }
             ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
 
             return toResponsSuccess(pageUtil);
@@ -108,20 +141,37 @@ public class ApiLogController extends ApiBaseAction {
      */
     @ApiOperation(value = "用户ASG记录")
     @GetMapping("asg")
-    public Object depositLogList(@RequestParam("userName") String userName, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10")Integer size){
+    public Object depositLogList(@RequestParam(value="userName", defaultValue = "") String userName, @RequestParam(value = "address", defaultValue = "") String address, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10")Integer size){
 
         try {
+
+            UserVo userVo = null;
+            if (!userName.isEmpty()) userVo = userService.queryObjectByName(userName);
+
             Map params = new HashMap();
             params.put("page", page);
             params.put("limit", size);
             params.put("sidx", "id");
             params.put("order", "desc");
-            params.put("userName", userName);
+            params.put("address", address);
+            if (userVo != null) params.put("userId", userVo.getUserId());
 
             //查询列表数据
             Query query = new Query(params);
             int total = logASGService.queryTotal(query);
             List<LogASGVo> logList = logASGService.queryList(query);
+            if (logList.size() <= 0) {
+                ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
+                return toResponsSuccess(pageUtil);
+            }
+            List<UserVo> userVoList = userService.queryUserByAsg(logList);
+            for (int i = 0; i < userVoList.size(); i++){
+                for (int j = 0; j < logList.size(); j++){
+                    if (logList.get(j).getUserId().equals(userVoList.get(i).getUserId())){
+                        logList.get(j).setUserName(userVoList.get(i).getUserName());
+                    }
+                }
+            }
             ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
 
             return toResponsSuccess(pageUtil);
@@ -140,20 +190,36 @@ public class ApiLogController extends ApiBaseAction {
      */
     @ApiOperation(value = "用户返佣记录")
     @GetMapping("rake")
-    public Object confirmCashOut(@RequestParam("userName") String userName, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10")Integer size){
+    public Object confirmCashOut(@RequestParam(value="userName", defaultValue = "") String userName, @RequestParam(value = "address", defaultValue = "") String address, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10")Integer size){
 
         try {
+            UserVo userVo = null;
+            if (!userName.isEmpty()) userVo = userService.queryObjectByName(userName);
+
             Map params = new HashMap();
             params.put("page", page);
             params.put("limit", size);
             params.put("sidx", "id");
             params.put("order", "desc");
-            params.put("userName", userName);
+            params.put("address", address);
+            if (userVo != null) params.put("userId", userVo.getUserId());
 
             //查询列表数据
             Query query = new Query(params);
             int total = logRakeBackService.queryTotal(query);
             List<LogRakeBackVo> logList = logRakeBackService.queryList(query);
+            if (logList.size() <= 0) {
+                ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
+                return toResponsSuccess(pageUtil);
+            }
+            List<UserVo> userVoList = userService.queryUserByBack(logList);
+            for (int i = 0; i < userVoList.size(); i++){
+                for (int j = 0; j < logList.size(); j++){
+                    if (logList.get(j).getUserId().equals(userVoList.get(i).getUserId())){
+                        logList.get(j).setUserName(userVoList.get(i).getUserName());
+                    }
+                }
+            }
             ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
 
             return toResponsSuccess(pageUtil);
@@ -173,21 +239,36 @@ public class ApiLogController extends ApiBaseAction {
      */
     @ApiOperation(value = "用户赞助记录")
     @GetMapping("support")
-    public Object cancelCashOut(@RequestParam("gameNum") String gameNum, @RequestParam("userName") String userName, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10")Integer size){
+    public Object cancelCashOut(@RequestParam(value="gameNum", defaultValue = "") String gameNum, @RequestParam(value="userName", defaultValue = "") String userName, @RequestParam(value = "address", defaultValue = "") String address, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10")Integer size){
 
         try {
+            UserVo userVo = null;
+            if (!userName.isEmpty()) userVo = userService.queryObjectByName(userName);
 
             Map params = new HashMap();
             params.put("page", page);
             params.put("limit", size);
             params.put("sidx", "id");
             params.put("order", "desc");
-            params.put("userName", gameNum);
+            params.put("gameNum", gameNum);
+            if (userVo != null) params.put("userId", userVo.getUserId());
 
             //查询列表数据
             Query query = new Query(params);
             int total = logGameResultService.queryTotal(query);
             List<LogGameResultVo> logList = logGameResultService.queryList(query);
+            if (logList.size() <= 0) {
+                ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
+                return toResponsSuccess(pageUtil);
+            }
+            List<UserVo> userVoList = userService.queryUserByCash(logList);
+            for (int i = 0; i < userVoList.size(); i++){
+                for (int j = 0; j < logList.size(); j++){
+                    if (logList.get(j).getUserId().equals(userVoList.get(i).getUserId())){
+                        logList.get(j).setUserName(userVoList.get(i).getUserName());
+                    }
+                }
+            }
             ApiPageUtils pageUtil = new ApiPageUtils(logList, total, query.getLimit(), query.getPage());
 
             return toResponsSuccess(pageUtil);

@@ -23,7 +23,6 @@
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/entity/ConfigVo.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/entity/LogPayVo.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/interceptor/AuthorizationInterceptor.java
-/Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/dao/ApiConstInfoMapper.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/api/ApiConfigWildController.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/dao/ApiConfigMapper.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/dao/ApiConfigForageMapper.java
@@ -75,7 +74,6 @@
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/ApiApplication.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/entity/ConfigDogVo.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/entity/ConfigCatchEquipVo.java
-/Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/service/ApiConstInfoService.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/dao/ApiLogGameResultMapper.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/api/SysUploadController.java
 /Users/huzhiyuan/Desktop/Java-后端/dog_race_admin/platform-api/src/main/java/com/platform/service/SysUserService.java

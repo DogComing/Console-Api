@@ -36,6 +36,9 @@ public class ConfigMapVo implements Serializable {
     @ApiModelProperty("地图图片名称")
     private String imgName;
 
+    /**
+     * 宠物出现比例
+     */
     @ApiModelProperty("宠物出现比例")
     private BigDecimal petRatio;
 

@@ -60,7 +60,7 @@
         select * from oil_user where id = #{value}
     </select>
 
-    <select id="queryList" resultMap="userList">
+    <select id="queryList" resultMap="userMap">
         select * from oil_user where 1 = 1
         <if test="userName != null and userName != ''">
             and `user_name` = #{userName}
@@ -102,5 +102,44 @@
         </set>
         where id = #{userId}
     </update>
+
+    <select id="queryUserList" resultMap="userList">
+        select * from oil_user where id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.userId}
+        </foreach>
+    </select>
+
+    <select id="queryUserByPay" resultMap="userList">
+        select * from oil_user where id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.userId}
+        </foreach>
+    </select>
+
+    <select id="queryUserByAsg" resultMap="userList">
+        select * from oil_user where id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.userId}
+        </foreach>
+    </select>
+
+    <select id="queryUserByBack" resultMap="userList">
+        select * from oil_user where id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.userId}
+        </foreach>
+    </select>
+
+    <select id="queryUserByCash" resultMap="userList">
+        select * from oil_user where id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.userId}
+        </foreach>
+    </select>
+
+    <select id="queryObjectByName" resultMap="userList">
+        select * from oil_user where user_name = #{userName}
+    </select>
 
 </mapper>

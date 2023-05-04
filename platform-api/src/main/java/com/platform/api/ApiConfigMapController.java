@@ -31,7 +31,7 @@ public class ApiConfigMapController extends ApiBaseAction {
      * @param size 每页几条数据
      * @return
      */
-    @ApiOperation(value = "获取狗狗列表")
+    @ApiOperation(value = "获取地图列表")
     @GetMapping(value = "all")
     public Object group(@RequestParam(value = "name", defaultValue = "")String name, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
 
@@ -81,7 +81,7 @@ public class ApiConfigMapController extends ApiBaseAction {
      * @param mapVo
      * @return
      */
-    @ApiOperation(value = "新增狗狗")
+    @ApiOperation(value = "新增地图")
     @PostMapping("add")
     public Object add(@RequestBody ConfigMapVo mapVo) {
 

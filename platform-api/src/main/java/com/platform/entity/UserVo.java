@@ -155,7 +155,6 @@ public class UserVo implements Serializable {
     @ApiModelProperty("基地openid")
     private String openId;
 
-    @JsonIgnore
     @ApiModelProperty("基地address")
     private String address;
 

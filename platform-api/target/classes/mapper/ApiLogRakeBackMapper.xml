@@ -23,8 +23,11 @@
 
     <select id="queryList" resultMap="logMap">
         select * from oil_rake_back where 1 = 1
-        <if test="userName != null and userName != ''">
-            and `user_name` = #{userName}
+        <if test="userId != null and userId != ''">
+            and `user_id` = #{userId}
+        </if>
+        <if test="address != null and address != ''">
+            and `address` = #{address}
         </if>
         <if test="day != null and day != ''">
             DATE_FORMAT(create_time, '%Y-%m-%d') = #{day}
@@ -44,8 +47,11 @@
 
     <select id="queryTotal" resultType="int">
         select count(1) from oil_rake_back where 1 = 1
-        <if test="userName != null and userName != ''">
-            and `user_name` = #{userName}
+        <if test="userId != null and userId != ''">
+            and `user_id` = #{userId}
+        </if>
+        <if test="address != null and address != ''">
+            and `address` = #{address}
         </if>
         <if test="day != null and day != ''">
             DATE_FORMAT(create_time, '%Y-%m-%d') = #{day}

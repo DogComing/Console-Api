@@ -2,7 +2,6 @@ com/platform/entity/ConfigCatchEquipVo.class
 com/platform/service/ApiLogRakeBackService.class
 com/platform/entity/ConfigVo.class
 com/platform/service/ApiConfigMapWildRatioService.class
-com/platform/dao/ApiConstInfoMapper.class
 com/platform/api/ApiConfigFightEquipController.class
 com/platform/api/ApiConfigForageController.class
 com/platform/dao/ApiLogASGMapper.class
@@ -55,7 +54,6 @@ com/platform/entity/ConfigAdVo.class
 com/platform/service/ApiConfigMapPetRatioService.class
 com/platform/api/ApiConfigDogController.class
 com/platform/util/ApiBaseAction.class
-com/platform/service/ApiConstInfoService.class
 com/platform/pojo/ServerConfig.class
 com/platform/entity/ConfigWildVo.class
 com/platform/entity/ConfigFightEquipVo.class

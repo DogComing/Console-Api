@@ -81,9 +81,20 @@ public class LogAwardVo implements Serializable {
     @ApiModelProperty("中奖金额")
     private BigDecimal money;
 
+    /**
+     * 钱包地址
+     */
+    @ApiModelProperty("钱包地址")
+    private String address;
+
     @ApiModelProperty("创建时间")
     private Date createTime;
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    /**
+     * 用户昵称
+     */
+    private String userName;
 }

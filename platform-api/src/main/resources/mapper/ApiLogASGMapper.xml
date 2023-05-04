@@ -7,7 +7,6 @@
     <resultMap type="com.platform.entity.LogASGVo" id="logMap">
         <result property="id" column="id"/>
         <result property="userId" column="user_id"/>
-        <result property="userName" column="user_name"/>
         <result property="num" column="num"/>
         <result property="logType" column="log_type"/>
         <result property="asgType" column="asg_type"/>
@@ -25,8 +24,11 @@
 
     <select id="queryList" resultMap="logMap">
         select * from log_asg where 1 = 1
-        <if test="userName != null and userName != ''">
-            and `user_name` = #{userName}
+        <if test="userId != null and userId != ''">
+            and `user_id` = #{userId}
+        </if>
+        <if test="address != null and address != ''">
+            and `address` = #{address}
         </if>
         <if test="day != null and day != ''">
             DATE_FORMAT(create_time, '%Y-%m-%d') = #{day}
@@ -46,8 +48,11 @@
 
     <select id="queryTotal" resultType="int">
         select count(1) from log_asg where 1 = 1
-        <if test="userName != null and userName != ''">
-            and `user_name` = #{userName}
+        <if test="userId != null and userId != ''">
+            and `user_id` = #{userId}
+        </if>
+        <if test="address != null and address != ''">
+            and `address` = #{address}
         </if>
         <if test="day != null and day != ''">
             DATE_FORMAT(create_time, '%Y-%m-%d') = #{day}
